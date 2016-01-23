@@ -2,7 +2,7 @@
 #define VIENNACL_SCHEDULER_EXECUTE_GENERIC_DISPATCHER_HPP
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -32,6 +32,7 @@
 #include "viennacl/scheduler/execute_vector_dispatcher.hpp"
 #include "viennacl/scheduler/execute_matrix_dispatcher.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace scheduler

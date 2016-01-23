@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_OPENCL_KERNELS_SPAI_HPP
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -25,6 +25,7 @@
 
 /** @file viennacl/linalg/opencl/kernels/spai.hpp
  *  @brief OpenCL kernel file for sparse approximate inverse operations */
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg
@@ -615,7 +616,7 @@ struct spai
 
       std::string prog_name = program_name();
       #ifdef VIENNACL_BUILD_INFO
-      std::cout << "Creating program " << prog_name << std::endl;
+      Rcpp::Rcout << "Creating program " << prog_name << std::endl;
       #endif
       ctx.add_program(source, prog_name);
       init_done[ctx.handle().get()] = true;

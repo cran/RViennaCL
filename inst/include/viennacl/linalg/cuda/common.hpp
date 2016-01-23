@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_CUDA_COMMON_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -29,6 +29,7 @@
 
 #define VIENNACL_CUDA_LAST_ERROR_CHECK(message)  detail::cuda_last_error_check (message, __FILE__, __LINE__)
 
+#include <Rcpp.h>
 namespace viennacl
 {
 

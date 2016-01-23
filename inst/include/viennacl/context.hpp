@@ -2,7 +2,7 @@
 #define VIENNACL_CONTEXT_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -29,6 +29,7 @@
 #include "viennacl/ocl/forwards.h"
 #include "viennacl/backend/mem_handle.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 /** @brief Represents a generic 'context' similar to an OpenCL context, but is backend-agnostic and thus also suitable for CUDA and OpenMP

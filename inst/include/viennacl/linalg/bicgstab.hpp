@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_BICGSTAB_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -37,6 +37,7 @@
 #include "viennacl/meta/result_of.hpp"
 #include "viennacl/linalg/iterative_operations.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg
@@ -470,7 +471,7 @@ namespace detail
       beta = new_ip_rr0star / ip_rr0star * alpha/omega;
       ip_rr0star = new_ip_rr0star;
 
-      if (!ip_rr0star || !omega || i - last_restart > tag.max_iterations_before_restart()) //search direction degenerate. A restart might help
+      if ( (ip_rr0star >= 0 && ip_rr0star <= 0) || (omega >=0 && omega <= 0) || i - last_restart > tag.max_iterations_before_restart()) //search direction degenerate. A restart might help
         restart_flag = true;
 
       // Execution of
@@ -479,7 +480,7 @@ namespace detail
       p -= omega * tmp0;
       p = residual + beta * p;
 
-      //std::cout << "Rel. Residual in current step: " << std::sqrt(std::fabs(viennacl::linalg::inner_prod(residual, residual) / norm_rhs_host)) << std::endl;
+      //Rcpp::Rcout << "Rel. Residual in current step: " << std::sqrt(std::fabs(viennacl::linalg::inner_prod(residual, residual) / norm_rhs_host)) << std::endl;
     }
 
     //store last error estimate:

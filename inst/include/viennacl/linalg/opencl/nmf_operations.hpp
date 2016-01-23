@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_OPENCL_NMF_OPERATIONS_HPP_
 
 /* =========================================================================
- Copyright (c) 2010-2015, Institute for Microelectronics,
+ Copyright (c) 2010-2016, Institute for Microelectronics,
  Institute for Analysis and Scientific Computing,
  TU Wien.
  Portions of this software are copyright by UChicago Argonne, LLC.
@@ -27,6 +27,7 @@
 
 #include "viennacl/linalg/host_based/nmf_operations.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg
@@ -108,7 +109,7 @@ void nmf(viennacl::matrix_base<NumericT> const & V,
         diff_init = diff_val;
 
       if (conf.print_relative_error())
-        std::cout << diff_val / diff_init << std::endl;
+        Rcpp::Rcout << diff_val / diff_init << std::endl;
 
       // Approximation check
       if (diff_val / diff_init < conf.tolerance())

@@ -2,7 +2,7 @@
 #define VIENNACL_FORWARDS_H
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -70,6 +70,7 @@
 #include "viennacl/version.hpp"
 
 /** @brief Main namespace in ViennaCL. Holds all the basic types such as vector, matrix, etc. and defines operations upon them. */
+#include <Rcpp.h>
 namespace viennacl
 {
   typedef std::size_t                                       vcl_size_t;

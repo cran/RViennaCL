@@ -2,7 +2,7 @@
 #define VIENNACL_MISC_BANDWIDTH_REDUCTION_HPP
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -27,6 +27,7 @@
 #include "viennacl/misc/gibbs_poole_stockmeyer.hpp"
 
 
+#include <Rcpp.h>
 namespace viennacl
 {
   //TODO: Add convenience overload here. Which should be default?

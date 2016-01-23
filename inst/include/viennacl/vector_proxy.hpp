@@ -2,7 +2,7 @@
 #define VIENNACL_VECTOR_PROXY_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -28,6 +28,7 @@
 #include "viennacl/vector.hpp"
 #include "viennacl/tools/entry_proxy.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 

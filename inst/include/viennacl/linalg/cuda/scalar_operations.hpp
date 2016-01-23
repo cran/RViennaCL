@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_CUDA_SCALAR_OPERATIONS_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -35,6 +35,7 @@
 #include <cuda_runtime.h>
 
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg
@@ -328,7 +329,7 @@ asbs_s(ScalarT1 & s1,
   if (viennacl::is_cpu_scalar<NumericT2>::value)
     temporary_beta = beta;
 
-  std::cout << "Launching asbs_s_kernel..." << std::endl;
+  Rcpp::Rcout << "Launching asbs_s_kernel..." << std::endl;
   asbs_s_kernel<<<1, 1>>>(viennacl::cuda_arg(s1),
                           viennacl::cuda_arg<value_type>(detail::arg_reference(alpha, temporary_alpha)),
                           options_alpha,

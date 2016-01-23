@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_DETAIL_SPAI_SMALL_MATRIX_HPP
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -45,6 +45,7 @@
 
 #include "viennacl/forwards.h"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg

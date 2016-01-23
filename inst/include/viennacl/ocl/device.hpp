@@ -2,7 +2,7 @@
 #define VIENNACL_OCL_DEVICE_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -38,6 +38,7 @@
 #include "viennacl/ocl/handle.hpp"
 #include "viennacl/ocl/error.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace ocl
@@ -54,7 +55,7 @@ public:
   explicit device(cl_device_id dev) : device_(dev)
   {
 #if defined(VIENNACL_DEBUG_ALL) || defined(VIENNACL_DEBUG_DEVICE)
-    std::cout << "ViennaCL: Creating device object (CTOR with cl_device_id)" << std::endl;
+    Rcpp::Rcout << "ViennaCL: Creating device object (CTOR with cl_device_id)" << std::endl;
 #endif
     flush_cache();
   }
@@ -62,7 +63,7 @@ public:
   device(const device & other) : device_(0)
   {
 #if defined(VIENNACL_DEBUG_ALL) || defined(VIENNACL_DEBUG_DEVICE)
-    std::cout << "ViennaCL: Creating device object (Copy CTOR)" << std::endl;
+    Rcpp::Rcout << "ViennaCL: Creating device object (Copy CTOR)" << std::endl;
 #endif
     if (device_ != other.device_)
     {

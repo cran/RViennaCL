@@ -2,7 +2,7 @@
 #define VIENNACL_DEVICE_SPECIFIC_BUILTIN_DATABASE_MATRIX_PRODUCT_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -58,6 +58,7 @@
 * Initializes the device database with the provided profiles. Updated semi-automatically.
 */
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace device_specific

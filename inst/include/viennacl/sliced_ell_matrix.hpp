@@ -2,7 +2,7 @@
 #define VIENNACL_SLICED_ELL_MATRIX_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -32,6 +32,7 @@
 
 #include "viennacl/linalg/sparse_matrix_operations.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 /** @brief Sparse matrix class using the sliced ELLPACK with parameters C, \f$ \sigma \f$
@@ -224,8 +225,14 @@ template<typename IndexT, typename NumericT, typename IndexT2>
 void copy(std::vector< std::map<IndexT, NumericT> > const & cpu_matrix,
           sliced_ell_matrix<NumericT, IndexT2> & gpu_matrix)
 {
-  tools::const_sparse_matrix_adapter<NumericT, IndexT> temp(cpu_matrix, cpu_matrix.size(), cpu_matrix.size());
-  viennacl::copy(temp, gpu_matrix);
+  vcl_size_t max_col = 0;
+  for (vcl_size_t i=0; i<cpu_matrix.size(); ++i)
+  {
+    if (cpu_matrix[i].size() > 0)
+      max_col = std::max<vcl_size_t>(max_col, (cpu_matrix[i].rbegin())->first);
+  }
+
+  viennacl::copy(tools::const_sparse_matrix_adapter<NumericT, IndexT>(cpu_matrix, cpu_matrix.size(), max_col + 1), gpu_matrix);
 }
 
 
@@ -255,7 +262,7 @@ void copy(sliced_ell_matrix<ScalarT, IndexT> const & gpu_matrix, CPUMatrixT & cp
 
         if (coords[offset] >= gpu_matrix.size2())
         {
-            std::cerr << "ViennaCL encountered invalid data " << offset << " " << ind << " " << row << " " << coords[offset] << " " << gpu_matrix.size2() << std::endl;
+            Rcpp::Rcerr << "ViennaCL encountered invalid data " << offset << " " << ind << " " << row << " " << coords[offset] << " " << gpu_matrix.size2() << std::endl;
             return;
         }
 
@@ -286,11 +293,11 @@ namespace detail
       if (viennacl::traits::handle(lhs) == viennacl::traits::handle(rhs.rhs()))
       {
         viennacl::vector<ScalarT> temp(lhs);
-        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), temp);
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(1), temp, ScalarT(0));
         lhs = temp;
       }
       else
-        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), lhs);
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(1), lhs, ScalarT(0));
     }
   };
 
@@ -299,9 +306,15 @@ namespace detail
   {
     static void apply(vector_base<ScalarT> & lhs, vector_expression<const sliced_ell_matrix<ScalarT, IndexT>, const vector_base<ScalarT>, op_prod> const & rhs)
     {
-      viennacl::vector<ScalarT> temp(lhs);
-      viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), temp);
-      lhs += temp;
+      // check for the special case x += A * x
+      if (viennacl::traits::handle(lhs) == viennacl::traits::handle(rhs.rhs()))
+      {
+        viennacl::vector<ScalarT> temp(lhs);
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(1), temp, ScalarT(0));
+        lhs += temp;
+      }
+      else
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(1), lhs, ScalarT(1));
     }
   };
 
@@ -310,9 +323,15 @@ namespace detail
   {
     static void apply(vector_base<ScalarT> & lhs, vector_expression<const sliced_ell_matrix<ScalarT, IndexT>, const vector_base<ScalarT>, op_prod> const & rhs)
     {
-      viennacl::vector<ScalarT> temp(lhs);
-      viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), temp);
-      lhs -= temp;
+      // check for the special case x -= A * x
+      if (viennacl::traits::handle(lhs) == viennacl::traits::handle(rhs.rhs()))
+      {
+        viennacl::vector<ScalarT> temp(lhs);
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(1), temp, ScalarT(0));
+        lhs -= temp;
+      }
+      else
+        viennacl::linalg::prod_impl(rhs.lhs(), rhs.rhs(), ScalarT(-1), lhs, ScalarT(1));
     }
   };
 

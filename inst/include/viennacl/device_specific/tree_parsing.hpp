@@ -2,7 +2,7 @@
 #define VIENNACL_DEVICE_SPECIFIC_TREE_PARSING_HPP
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -33,6 +33,7 @@
 #include "viennacl/device_specific/utils.hpp"
 #include "viennacl/device_specific/mapped_objects.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace device_specific

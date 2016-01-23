@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_VANDERMONDE_MATRIX_OPERATIONS_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -29,6 +29,7 @@
 #include "viennacl/fft.hpp"
 #include "viennacl/linalg/opencl/vandermonde_matrix_operations.hpp"
 
+#include <Rcpp.h>
 namespace viennacl
 {
   namespace linalg

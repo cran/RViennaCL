@@ -2,7 +2,7 @@
 #define VIENNACL_DEVICE_SPECIFIC_BUILTIN_DATABASE_COMMON_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -29,6 +29,7 @@
 
 #include "viennacl/device_specific/forwards.h"
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace device_specific
@@ -104,6 +105,42 @@ public:
 };
 
 
+template<typename StringT>
+StringT get_mapped_device_name(StringT const & device_name, vendor_id_type vendor_id)
+{
+  if (vendor_id == viennacl::ocl::nvidia_id)
+  {
+    vcl_size_t found=0;
+    if ((found = device_name.find("GeForce",0)) != std::string::npos)
+    {
+      if ((found = device_name.find_first_of("123456789", found)) != std::string::npos)
+      {
+        switch (device_name[found]) // GeForce 400 series mapped to GTX 470, GeForce 500 series mapped to GTX 580:
+        {
+        case '4' : return "GeForce GTX 470";
+        case '5' : return "GeForce GTX 570";
+        default: break; // since there is only one Kepler and one Maxwell device in the database, fallback works properly
+        }
+      }
+    }
+    else if ((found = device_name.find("Tesla",0)) != std::string::npos) // map Kepler-based Teslas to K20m
+    {
+      if (device_name.find("Tesla C10",0) != std::string::npos)
+        return "Tesla C2050";
+      else if (device_name.find("Tesla S10",0) != std::string::npos)
+        return "Tesla C2050";
+      else if (device_name.find("Tesla M20",0) != std::string::npos)
+        return "Tesla C2050";
+      else if (device_name.find("Tesla S20",0) != std::string::npos)
+        return "Tesla C2050";
+      else if (device_name.find("Tesla K",0) != std::string::npos) // all Kepler-based Teslas
+        return "Tesla K20m";
+    }
+  }
+
+  return device_name;
+}
+
 /** @brief Get the profile for a device and a descriptor
 *
 * There are built-in defaults for CPUs, Accelerators, GPUs.
@@ -113,28 +150,28 @@ inline ParamT const & get_parameters(database_type<ParamT> const & database, vie
 {
   scheduler::statement_node_numeric_type numeric_type = scheduler::statement_node_numeric_type(scheduler::result_of::numeric_type_id<NumericT>::value);
 
-  device_type dev_type = device.type();
+  device_type dev_type = device.type() & device_type(0xFE); // chop off 'default' characterization
   vendor_id_type vendor_id = device.vendor_id();
   ocl::device_architecture_family device_architecture = device.architecture_family();
   std::string const & device_name = device.name();
 
 
   /*-Vendor ID-*/
-  //  std::cout << "Looking up vendor ID..." << std::endl;
+  //  Rcpp::Rcout << "Looking up vendor ID..." << std::endl;
   typename database_type<ParamT>::type::map_t::const_iterator vendor_it = database.map.d.find(vendor_id);
   //Vendor not recognized =>  device type default
   if (vendor_it==database.map.d.end())
     return database.at(ocl::unknown_id, dev_type, ocl::unknown, "", numeric_type);
 
   /*-Device Type-*/
-  //  std::cout << "Looking up device type..." << std::endl;
+  //  Rcpp::Rcout << "Looking up device type..." << std::endl;
   typename database_type<ParamT>::device_type_t::map_t::const_iterator device_type_it = vendor_it->second.d.find(dev_type);
   //Device type not recognized for this vendor => device type default
   if (device_type_it==vendor_it->second.d.end())
     return database.at(ocl::unknown_id, dev_type, ocl::unknown, "", numeric_type);
 
   /*-Device Architecture-*/
-  //  std::cout << "Looking up device architecture..." << std::endl;
+  //  Rcpp::Rcout << "Looking up device architecture..." << std::endl;
   typename database_type<ParamT>::device_architecture_t::map_t::const_iterator architecture_it = device_type_it->second.d.find(device_architecture);
   //Architecture not found. We try to find the closest architecture available.
   if (architecture_it==device_type_it->second.d.end())
@@ -155,22 +192,23 @@ inline ParamT const & get_parameters(database_type<ParamT> const & database, vie
   }
 
   /*-Device Name-*/
-  //  std::cout << "Looking up device name..." << std::endl;
-  typename database_type<ParamT>::device_name_t::map_t::const_iterator device_name_it = architecture_it->second.d.find(device_name);
+  std::string mapped_device_name = get_mapped_device_name(device_name, device.vendor_id());
+
+  typename database_type<ParamT>::device_name_t::map_t::const_iterator device_name_it = architecture_it->second.d.find(mapped_device_name);
   //Name not found. We just take the first device for the architecture
   if (device_name_it==architecture_it->second.d.end())
   {
     device_name_it = architecture_it->second.d.begin();
   }
 
-  //  std::cout << "Looking up expression name.." << std::endl;
+  //  Rcpp::Rcout << "Looking up expression name.." << std::endl;
   /*-Expression-*/
   typename database_type<ParamT>::expression_t::map_t::const_iterator expression_it = device_name_it->second.d.find(numeric_type);
   //Expression not found => Vendor default
   if (expression_it==device_name_it->second.d.end())
     return database.at(ocl::unknown_id, dev_type, ocl::unknown, "", numeric_type);
 
-  //  std::cout << "Device found in the database! Getting profile..." << std::endl;
+  //  Rcpp::Rcout << "Device found in the database! Getting profile..." << std::endl;
   //Everything okay. Return specific profile//
   return expression_it->second;
 }

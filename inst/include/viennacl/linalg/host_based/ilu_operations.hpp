@@ -2,7 +2,7 @@
 #define VIENNACL_LINALG_HOST_BASED_ILU_OPERATIONS_HPP_
 
 /* =========================================================================
-   Copyright (c) 2010-2015, Institute for Microelectronics,
+   Copyright (c) 2010-2016, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
                             TU Wien.
    Portions of this software are copyright by UChicago Argonne, LLC.
@@ -42,6 +42,7 @@
   #define VIENNACL_OPENMP_ILU_MIN_SIZE  5000
 #endif
 
+#include <Rcpp.h>
 namespace viennacl
 {
 namespace linalg
@@ -75,7 +76,7 @@ void extract_L(compressed_matrix<NumericT> const & A,
     for (unsigned int j = col_begin; j < col_end; ++j)
     {
       unsigned int col = A_col_buffer[j];
-      if (col <= row)
+      if (long(col) <= row)
         ++L_row_buffer[row];
     }
   }
@@ -107,7 +108,7 @@ void extract_L(compressed_matrix<NumericT> const & A,
       unsigned int col = A_col_buffer[j];
       NumericT value = A_elements[j];
 
-      if (col <= row)
+      if (long(col) <= row)
       {
         L_col_buffer[index_L] = col;
         L_elements[index_L]   = value;
@@ -282,9 +283,9 @@ void extract_LU(compressed_matrix<NumericT> const & A,
     for (unsigned int j = col_begin; j < col_end; ++j)
     {
       unsigned int col = A_col_buffer[j];
-      if (col <= row)
+      if (long(col) <= row)
         ++L_row_buffer[row];
-      if (col >= row)
+      if (long(col) >= row)
         ++U_row_buffer[row];
     }
   }
@@ -324,14 +325,14 @@ void extract_LU(compressed_matrix<NumericT> const & A,
       unsigned int col = A_col_buffer[j];
       NumericT value = A_elements[j];
 
-      if (col <= row)
+      if (long(col) <= row)
       {
         L_col_buffer[index_L] = col;
         L_elements[index_L]   = value;
         ++index_L;
       }
 
-      if (col >= row)
+      if (long(col) >= row)
       {
         U_col_buffer[index_U] = col;
         U_elements[index_U]   = value;
@@ -477,7 +478,7 @@ void ilu_transpose(compressed_matrix<NumericT> const & A,
 
   for (unsigned int row = 0; row < static_cast<unsigned int>(A.size1()); ++row)
   {
-    //std::cout << "Row " << row << ": ";
+    //Rcpp::Rcout << "Row " << row << ": ";
     unsigned int row_start = A_row_buffer[row];
     unsigned int row_stop  = A_row_buffer[row+1];
 
@@ -576,7 +577,7 @@ void ilu_chow_patel_sweep(compressed_matrix<NumericT>       & L,
       }
 
       // update l_ij:
-      assert(U_col_buffer[row_U_end - 1] == row && bool("Accessing U element which is not a diagonal element!"));
+      assert(U_col_buffer[row_U_end - 1] == col && bool("Accessing U element which is not a diagonal element!"));
       L_elements[j] = (aij_L_ptr[j] - sum) / U_backup[row_U_end - 1];  // diagonal element is last entry in U
     }
 
@@ -661,7 +662,7 @@ void ilu_form_neumann_matrix(compressed_matrix<NumericT> & R,
       R_elements[j] /= -diag;
   }
 
-  //std::cout << "diag_R: " << diag_R << std::endl;
+  //Rcpp::Rcout << "diag_R: " << diag_R << std::endl;
 }
 
 } //namespace host_based
