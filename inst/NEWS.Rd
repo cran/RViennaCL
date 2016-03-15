@@ -1,8 +1,9 @@
 \name{NEWS}
 \title{News for Package \pkg{RViennaCL}}
-\section{Release version 1.7.1}{
+\section{Release version 1.7.0-1}{
   \itemize{
-    \item{Upgraded to use ViennaCL 1.7.1 headers}
+    \item{Added some small functions for context
+          and device indicies.}
   }
 }
 \section{Initial Release version 1.7.0}{

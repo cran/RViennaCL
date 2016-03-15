@@ -1,8 +1,8 @@
-1aa07eae7ae24b32c61fc2f73edac9ae *DESCRIPTION
+ee247e171141688014bde5eb11d36141 *DESCRIPTION
 8b54e5a89fbda3af5e077053d40bec76 *NAMESPACE
-3c13dabc5b3f6354e124e23eb9b9728d *README.md
-0883201e01ddd7a715df6c7cebfafef7 *build/partial.rdb
-35281ebdd6053e05e4bc0708d2816e11 *inst/NEWS.Rd
+831711f03cc5f3e39bce290896e23b54 *README.md
+e7c35ec66a3b1af5d9d5f7a283fe0ecd *build/partial.rdb
+82724c399ba3cf871b8929565ed205f7 *inst/NEWS.Rd
 aae2321b069a72d10c8e3e4c5aba0dcc *inst/include/viennacl/backend/cpu_ram.hpp
 b1adaec0588b1d56720bf5b579adcc31 *inst/include/viennacl/backend/cuda.hpp
 f6c5b8a1443441d7a791705d94730b99 *inst/include/viennacl/backend/mem_handle.hpp
@@ -201,9 +201,9 @@ be20cf1ce652eb42f2b15863105ce3c2 *inst/include/viennacl/meta/tag_of.hpp
 c3f63ce2802c03622e5e3b93f38249ee *inst/include/viennacl/misc/bandwidth_reduction.hpp
 89a6b04e241d92df004f6e971380c64d *inst/include/viennacl/misc/cuthill_mckee.hpp
 b8a5ec67091aa0bb37afc44ad108c040 *inst/include/viennacl/misc/gibbs_poole_stockmeyer.hpp
-66bf08cab4be6cb84593cd988d7393e9 *inst/include/viennacl/ocl/backend.hpp
+d762e143e5916d7697198ef97a6a2584 *inst/include/viennacl/ocl/backend.hpp
 ac2e9c06753daa8bdbd7e2b04cad29f1 *inst/include/viennacl/ocl/command_queue.hpp
-b0a6fa8cee0708399ebbaa67b2aafd51 *inst/include/viennacl/ocl/context.hpp
+478a172dbd197431512b7c8210d40a14 *inst/include/viennacl/ocl/context.hpp
 a306155f610506bab3fafa99939a65b4 *inst/include/viennacl/ocl/device.hpp
 b85b0738e5d07727a958ff1fd6b0298f *inst/include/viennacl/ocl/device_utils.hpp
 daee1ee79211f2fc4792c7ceb1f8491c *inst/include/viennacl/ocl/enqueue.hpp

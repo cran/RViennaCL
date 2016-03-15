@@ -10,7 +10,7 @@ includes BLAS level 1-3 support and linear algebra solvers.
 
 This package aims to provide a simple means of linking to the 
 [ViennaCL](http://viennacl.sourceforge.net/) header files for use among CRAN
-packages. Similar to the popular R package [BH](http://cran.r-project.org/web/packages/BH/index.html), 
+packages. Similar to the popular R package [BH](https://cran.r-project.org/package=BH), 
 by placing these libraries in this package, we offer a more
 efficient distribution system for CRAN as replication of this code in the
 sources of other packages is avoided.
