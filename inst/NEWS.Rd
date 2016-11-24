@@ -1,9 +1,10 @@
 \name{NEWS}
 \title{News for Package \pkg{RViennaCL}}
-\section{Release version 1.7.0-1}{
+\section{Version 1.7.1.4}{
   \itemize{
-    \item{Added some small functions for context
-          and device indicies.}
+    \item{Updated package to latest ViennaCL header
+          files.  Minor updates to make certain methods
+          public (to be updated in ViennaCL 1.8.0).}
   }
 }
 \section{Initial Release version 1.7.0}{
